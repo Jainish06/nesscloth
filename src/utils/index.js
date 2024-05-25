@@ -14,6 +14,11 @@ export const navOptions = [
     label: "Women",
     path: "/product/listing/women",
   },
+  {
+    id: "about",
+    label: "About",
+    path: "/about",
+  },
 ];
 
 export const adminNavOptions = [
