@@ -1,10 +1,5 @@
 export const navOptions = [
   {
-    id: "home",
-    label: "Home",
-    path: "/",
-  },
-  {
     id: "listing",
     label: "All Products",
     path: "/product/listing/all-products",
