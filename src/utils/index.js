@@ -1,3 +1,5 @@
+import { options } from "joi";
+
 export const navOptions = [
   {
     id: "listing",
@@ -34,7 +36,45 @@ export const adminNavOptions = [
   },
 ];
 
-export const styles = {
-  button:
-    "mt-1.5 inline-block bg-gray-400 px-5 py-3 text-xs font-medium upprcase tracking-wide text-white",
-};
+
+
+export const registrationFormControls = [
+  {
+    id : 'name',
+    type : 'text',
+    palceholder : 'Enter your name.',
+    label : 'Name',
+    componentType : 'input'
+  },
+  {
+    id : 'email',
+    type : 'email',
+    palceholder : 'Enter your Email.',
+    label : 'Email',
+    componentType : 'input'
+  },
+  {
+    id : 'password',
+    type : 'password',
+    palceholder : 'Enter password.',
+    label : 'Password',
+    componentType : 'input'
+  },
+  {
+    id : 'role',
+    type : '',
+    palceholder : '',
+    label : 'Role',
+    componentType : 'select',
+    options: [
+      {
+        id : 'admin',
+        label : 'Admin'
+      },
+      {
+        id : 'customer',
+        label : 'Customer'
+      }
+    ]
+  }
+]
