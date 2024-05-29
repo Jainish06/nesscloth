@@ -6,7 +6,7 @@ import { Fragment, useContext } from "react";
 import CommanModal from "../CommonModel";
 
 const isAdminView = false;
-const isAuthUser = true;
+const isAuthUser = false;
 const user = {
   role: "admin",
 };

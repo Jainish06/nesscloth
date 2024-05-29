@@ -36,34 +36,32 @@ export const adminNavOptions = [
   },
 ];
 
-
-
 export const registrationFormControls = [
   {
     id : 'name',
     type : 'text',
-    palceholder : 'Enter your name.',
+    placeholder : 'Enter your name.',
     label : 'Name',
     componentType : 'input'
   },
   {
     id : 'email',
     type : 'email',
-    palceholder : 'Enter your Email.',
+    placeholder : 'Enter your Email.',
     label : 'Email',
     componentType : 'input'
   },
   {
     id : 'password',
     type : 'password',
-    palceholder : 'Enter password.',
+    placeholder : 'Enter password.',
     label : 'Password',
     componentType : 'input'
   },
   {
     id : 'role',
     type : '',
-    palceholder : '',
+    placeholder : '',
     label : 'Role',
     componentType : 'select',
     options: [
@@ -77,4 +75,21 @@ export const registrationFormControls = [
       }
     ]
   }
+]
+
+export const loginFormControls = [
+  {
+    id : 'email',
+    type : 'email',
+    placeholder : 'Enter your Email.',
+    label : 'Email',
+    componentType : 'input'
+  },
+  {
+    id : 'password',
+    type : 'password',
+    placeholder : 'Enter password.',
+    label : 'Password',
+    componentType : 'input'
+  },
 ]
