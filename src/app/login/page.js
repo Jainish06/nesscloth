@@ -40,7 +40,7 @@ export default function Login() {
 
     console.log(res);
 
-    if (res == true) {
+    if (res.success) {
       setIsAuthUser(true);
       setUser(res?.finalData?.user);
       setFormData(intialFormData);
