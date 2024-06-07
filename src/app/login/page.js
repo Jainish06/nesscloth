@@ -6,7 +6,7 @@ import { login } from "@/services/login";
 import { loginFormControls } from "@/utils";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const intialFormData = {
   email: "",
@@ -51,7 +51,11 @@ export default function Login() {
     }
   }
 
-  console.log(isAuthUser,user);
+  console.log(isAuthUser, user);
+
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
 
   return (
     <div className="bg-white relative">
