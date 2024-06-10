@@ -8,6 +8,8 @@ export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
   const [isAuthUser, setIsAuthUser] = useState(false);
   const [user, setUser] = useState(false);
+  const [pageLevelLoader, setPageLevelLoader] = useState(false);
+  const [componentLevelLoader, setComponentLevelLoader] = useState({loading : false, id : ''});
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -29,6 +31,10 @@ export default function GlobalState({ children }) {
         setIsAuthUser,
         user,
         setUser,
+        pageLevelLoader,
+        setPageLevelLoader,
+        componentLevelLoader,
+        setComponentLevelLoader,
       }}
     >
       {children}
