@@ -32,7 +32,7 @@ export const adminNavOptions = [
   {
     id: "adminNewProduct",
     label: "Add New Product",
-    path: "/admin-view/add-product",
+    path: "/admin-view/add-products",
   },
 ];
 
@@ -93,3 +93,102 @@ export const loginFormControls = [
     componentType : 'input'
   },
 ]
+
+export const adminAddProductformControls = [
+  {
+    id: "name",
+    type: "text",
+    placeholder: "Enter name",
+    label: "Name",
+    componentType: "input",
+  },
+  {
+    id: "price",
+    type: "number",
+    placeholder: "Enter price",
+    label: "Price",
+    componentType: "input",
+  },
+  {
+    id: "description",
+    type: "text",
+    placeholder: "Enter description",
+    label: "Description",
+    componentType: "input",
+  },
+  {
+    id: "category",
+    type: "",
+    placeholder: "",
+    label: "Category",
+    componentType: "select",
+    options: [
+      {
+        id: "men",
+        label: "Men",
+      },
+      {
+        id: "women",
+        label: "Women",
+      },
+    ],
+  },
+  {
+    id: "deliveryInfo",
+    type: "text",
+    placeholder: "Enter deliveryInfo",
+    label: "Delivery Info",
+    componentType: "input",
+  },
+  {
+    id: "onSale",
+    type: "",
+    placeholder: "",
+    label: "On Sale",
+    componentType: "select",
+    options: [
+      {
+        id: "yes",
+        label: "Yes",
+      },
+      {
+        id: "no",
+        label: "No",
+      },
+    ],
+  },
+  {
+    id: "priceDrop",
+    type: "number",
+    placeholder: "Enter Price Drop",
+    label: "Price Drop",
+    componentType: "input",
+  },
+];
+
+export const AvailableSizes = [
+  {
+    id: "s",
+    label: "S",
+  },
+  {
+    id: "m",
+    label: "M",
+  },
+  {
+    id: "l",
+    label: "L",
+  },
+];
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyCRHHUsmYiwo8qKBx_YW2abJcXGuZOVNR8",
+  authDomain: "nesscloth.firebaseapp.com",
+  projectId: "nesscloth",
+  storageBucket: "nesscloth.appspot.com",
+  messagingSenderId: "132532117258",
+  appId: "1:132532117258:web:a533606c089b6272c8a4f3",
+  measurementId: "G-J0XBWXM988"
+};
+
+export const firebaseStorageURL = 'gs://nesscloth.appspot.com'

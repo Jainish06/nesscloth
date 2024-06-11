@@ -5,11 +5,9 @@ import { adminNavOptions, navOptions, styles } from "@/utils";
 import { Fragment, useContext } from "react";
 import CommanModal from "../CommonModel";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-const isAdminView = false;
-
-function NavItems({ isModalView = false }) {
+function NavItems({ isModalView = false, isAdminView, router }) {
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
@@ -27,6 +25,7 @@ function NavItems({ isModalView = false }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-white rounded md:p-0"
                 key={item.id}
+                onClick={() => router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -35,6 +34,7 @@ function NavItems({ isModalView = false }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-white rounded md:p-0"
                 key={item.id}
+                onClick={() => router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -47,22 +47,29 @@ function NavItems({ isModalView = false }) {
 export default function Navbar() {
   const { showNavModal, setShowNavModal } = useContext(GlobalContext);
   const { user, isAuthUser, setIsAuthUser, setUser } = useContext(GlobalContext);
-  const router = useRouter()
+  const router = useRouter();
+  const pathname = usePathname();
 
-  console.log(user, isAuthUser, "navbar");
+  console.log(pathname);
 
   function handleLogout() {
-    setIsAuthUser(false)
-    setUser(null)
-    Cookies.remove('token')
-    localStorage.clear()
-    router.push('/')
+    setIsAuthUser(false);
+    setUser(null);
+    Cookies.remove("token");
+    localStorage.clear();
+    router.push("/");
   }
+
+  const isAdminView = pathname.includes("admin-view");
+
   return (
     <>
       <nav className="bg-black fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-6">
-          <div className="flex items-center cursor-pointer">
+          <div
+            onClick={() => router.push("/")}
+            className="flex items-center cursor-pointer"
+          >
             <span className="slef-center text-2xl font-semibold whitespace-nowrap text-white">
               NESS
             </span>
@@ -92,6 +99,7 @@ export default function Navbar() {
                   className={
                     "mt-1.5 inline-block bg-white px-5 py-3 text-xs font-medium upprcase tracking-wide text-black"
                   }
+                  onClick={() => router.push("/")}
                 >
                   Client View
                 </button>
@@ -100,6 +108,7 @@ export default function Navbar() {
                   className={
                     "mt-1.5 inline-block bg-white px-5 py-3 text-xs font-medium upprcase tracking-wide text-black"
                   }
+                  onClick={() => router.push("/admin-view")}
                 >
                   Admin View
                 </button>
@@ -110,7 +119,7 @@ export default function Navbar() {
                 className={
                   "mt-1.5 inline-block bg-white px-5 py-3 text-xs font-medium upprcase tracking-wide text-black"
                 }
-                onClick={() => router.push('/login')}
+                onClick={() => router.push("/login")}
               >
                 Login
               </button>
@@ -148,12 +157,12 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
-          <NavItems />
+          <NavItems isAdminView={isAdminView} router={router}/>
         </div>
       </nav>
       <CommanModal
         showModalTitle={false}
-        mainContent={<NavItems isModalView={true} />}
+        mainContent={<NavItems isModalView={true} isAdminView={isAdminView} router={router}/>}
         show={showNavModal}
         setShow={setShowNavModal}
       />
