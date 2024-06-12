@@ -11,7 +11,6 @@ import {
   adminAddProductformControls,
   firebaseConfig,
   firebaseStorageURL,
-  firebaseStroageURL,
 } from "@/utils";
 import { initializeApp } from "firebase/app";
 import {
@@ -23,6 +22,8 @@ import {
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { func } from "joi";
+import ComponentLevelLoader from "@/components/Loader/ComponentLevel";
 
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app, firebaseStorageURL);
@@ -70,6 +71,8 @@ const intialFormData = {
 
 export default function AddProducts() {
   const [formData, setFormData] = useState(intialFormData);
+  const { componentLevelLoader, setComponentLevelLoader } =
+    useContext(GlobalContext);
 
   async function handleImage(event) {
     console.log(event.target.files);
@@ -84,11 +87,44 @@ export default function AddProducts() {
     }
   }
 
-  function handleTileClick(getCurrentItem){
-    console.log(getCurrentItem)
+  function handleTileClick(getCurrentItem) {
+    let cpySizes = [...formData.sizes];
+    const index = cpySizes.findIndex((item) => item.id === getCurrentItem.id);
+
+    if (index === -1) {
+      cpySizes.push(getCurrentItem);
+    } else {
+      cpySizes = cpySizes.filter((item) => item.id !== getCurrentItem.id);
+    }
+
+    setFormData({
+      ...formData,
+      sizes: cpySizes,
+    });
   }
 
   console.log(formData);
+
+  async function handleAddProduct() {
+    setComponentLevelLoader({ loading: true, id: "" });
+    const res = await addNewProduct(formData);
+    console.log(res);
+
+    if (res.success) {
+      setComponentLevelLoader({ loading: false, id: "" });
+      toast.success(res.message, {
+        position: "top-right",
+      });
+
+      setFormData(intialFormData);
+    } else {
+      toast.error(res.message, {
+        position: "top-right",
+      });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setFormData(intialFormData);
+    }
+  }
 
   return (
     <div className="w-full mt-5 mr-0 mb-0 ml-0 relative">
@@ -138,25 +174,24 @@ export default function AddProducts() {
             ) : null
           )}
           <button
-            // onClick={handleAddProduct}
+            onClick={handleAddProduct}
             className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
           >
-            Add
-            {/* {componentLevelLoader && componentLevelLoader.loading ? (
+            {componentLevelLoader && componentLevelLoader.loading ? (
               <ComponentLevelLoader
                 text={
-                  currentUpdatedProduct !== null
-                    ? "Updating Product"
-                    : "Adding Product"
+                  // currentUpdatedProduct !== null
+                    // ? "Updating Product"
+                     "Adding Product"
                 }
                 color={"#ffffff"}
                 loading={componentLevelLoader && componentLevelLoader.loading}
               />
-            ) : currentUpdatedProduct !== null ? (
-              "Update Product"
+            // ) : currentUpdatedProduct !== null ? (
+            //   "Update Product"
             ) : (
               "Add Product"
-            )} */}
+            )}
           </button>
         </div>
       </div>

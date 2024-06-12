@@ -1,6 +1,8 @@
 import connectToDB from "@/database";
+// import AuthUser from "@/middleware/AuthUser";
 import Product from "@/models/products";
 import Joi from "joi";
+import { NextResponse } from "next/server";
 
 const AddNewProductSchema = Joi.object({
   name: Joi.string().required(),
@@ -19,7 +21,12 @@ export const dynamic = "force-dynamic";
 export async function POST(req) {
   try {
     await connectToDB();
-    const user = "admin";
+    const user = 'admin'
+
+    // const isAuthUser = await AuthUser(req)
+
+    // console.log(isAuthUser , 'sangam');
+
     if (user === "admin") {
       const extractData = await req.json();
 
@@ -53,27 +60,26 @@ export async function POST(req) {
           message: error.details[0].message,
         });
       }
+
+      const newlyCreatedProduct = await Product.create(extractData);
+
+      if (newlyCreatedProduct) {
+        return NextResponse.json({
+          success: true,
+          message: "Product added successfully",
+        });
+      } else {
+        return NextResponse.json({
+          success: false,
+          message: "Failed to add the product ! please try again",
+        });
+      }
     } else {
       return NextResponse.json({
         success: false,
-        message: "Unauthorized action.",
+        message: "You are not autorized !",
       });
     }
-
-    const newProduct = await Product.create(extractData);
-
-    if (newProduct) {
-      return NextResponse.json({
-        success: true,
-        message: "Product added successfully!",
-      });
-    } else {
-      return NextResponse.json({
-        success: false,
-        message: "Product not added.Please try again.",
-      });
-    }
-    
   } catch (error) {
     console.log(error);
     return NextResponse.json({

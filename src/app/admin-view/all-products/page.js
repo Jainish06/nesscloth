@@ -1,7 +1,9 @@
-'use client'
+import CommonListing from "@/components/CommonListings";
+import { getAllProducts } from "@/services/product";
 
-export default function AllProducts(){
-    return(
-        <div>Admin View : All Products</div>
-    )
+export default async function AllProducts() {
+  const allProducts = await getAllProducts();
+  console.log(allProducts);
+
+  return <CommonListing data={allProducts && allProducts.data}/>;
 }
