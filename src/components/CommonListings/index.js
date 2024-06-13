@@ -30,7 +30,7 @@ export default function CommonListing({ data }) {
             : null}
         </div>
       </div>
-      <Notification/>
+      <Notification />
     </section>
   );
 }

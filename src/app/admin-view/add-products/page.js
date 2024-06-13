@@ -5,7 +5,7 @@ import SelectComponent from "@/components/FormElements/SelectComponent";
 import TileComponent from "@/components/TileComponent";
 import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
-import { addNewProduct, updateAProduct } from "@/services/product";
+import { addNewProduct, updateProduct } from "@/services/product";
 import {
   AvailableSizes,
   adminAddProductformControls,
@@ -70,9 +70,18 @@ const intialFormData = {
 };
 
 export default function AddProducts() {
+  const router = useRouter()
   const [formData, setFormData] = useState(intialFormData);
-  const { componentLevelLoader, setComponentLevelLoader } =
-    useContext(GlobalContext);
+  const {
+    componentLevelLoader,
+    setComponentLevelLoader,
+    currUpdatedProduct,
+    setCurrUpdatedProduct,
+  } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (currUpdatedProduct !== null) setFormData(currUpdatedProduct);
+  }, [currUpdatedProduct]);
 
   async function handleImage(event) {
     console.log(event.target.files);
@@ -107,7 +116,11 @@ export default function AddProducts() {
 
   async function handleAddProduct() {
     setComponentLevelLoader({ loading: true, id: "" });
-    const res = await addNewProduct(formData);
+    const res =
+      currUpdatedProduct !== null
+        ? await updateProduct(formData)
+        : await addNewProduct(formData);
+
     console.log(res);
 
     if (res.success) {
@@ -117,6 +130,10 @@ export default function AddProducts() {
       });
 
       setFormData(intialFormData);
+      setCurrUpdatedProduct(null)
+      setTimeout(() => {
+        router.push('/admin-view/all-products')
+      },1000)
     } else {
       toast.error(res.message, {
         position: "top-right",
@@ -180,15 +197,15 @@ export default function AddProducts() {
             {componentLevelLoader && componentLevelLoader.loading ? (
               <ComponentLevelLoader
                 text={
-                  // currentUpdatedProduct !== null
-                    // ? "Updating Product"
-                     "Adding Product"
+                  currUpdatedProduct !== null
+                    ? "Updating Product"
+                    : "Adding Product"
                 }
                 color={"#ffffff"}
                 loading={componentLevelLoader && componentLevelLoader.loading}
               />
-            // ) : currentUpdatedProduct !== null ? (
-            //   "Update Product"
+            ) : currUpdatedProduct !== null ? (
+              "Update Product"
             ) : (
               "Add Product"
             )}

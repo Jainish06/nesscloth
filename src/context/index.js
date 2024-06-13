@@ -9,7 +9,11 @@ export default function GlobalState({ children }) {
   const [isAuthUser, setIsAuthUser] = useState(false);
   const [user, setUser] = useState(false);
   const [pageLevelLoader, setPageLevelLoader] = useState(false);
-  const [componentLevelLoader, setComponentLevelLoader] = useState({loading : false, id : ''});
+  const [componentLevelLoader, setComponentLevelLoader] = useState({
+    loading: false,
+    id: "",
+  });
+  const [currUpdatedProduct, setCurrUpdatedProduct] = useState(null);
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -35,6 +39,8 @@ export default function GlobalState({ children }) {
         setPageLevelLoader,
         componentLevelLoader,
         setComponentLevelLoader,
+        currUpdatedProduct,
+        setCurrUpdatedProduct,
       }}
     >
       {children}
