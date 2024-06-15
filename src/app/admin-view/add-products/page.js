@@ -86,7 +86,6 @@ export default function AddProducts() {
   async function handleImage(event) {
     console.log(event.target.files);
     const extractImgURL = await firebaseImgUploadHelper(event.target.files[0]);
-    console.log(extractImgURL);
 
     if (extractImgURL !== "") {
       setFormData({

@@ -23,11 +23,11 @@ export default function ProductButton({ item }) {
   const isAdminView = pathName.includes("admin-view");
 
   async function handleDeleteProduct(item) {
-    
+    setComponentLevelLoader({ loading: true, id: item._id });
     const res = await deleteProduct(item._id);
 
     if (res.success) {
-      setComponentLevelLoader({ loading: true, id: item._id });
+      setComponentLevelLoader({ loading: false, id:'' });
       toast.success(res.message, {
         position: "top-right",
       });
