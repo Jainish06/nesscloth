@@ -9,7 +9,7 @@ export async function GET(req) {
     await connectToDB();
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
-    const getData = await Product.find({ category: id });
+    const getData = await Product.find({ category : id });
 
     if (getData) {
       return NextResponse.json({

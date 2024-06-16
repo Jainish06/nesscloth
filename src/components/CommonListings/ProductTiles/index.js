@@ -14,9 +14,9 @@ export default function ProductTile({ item }) {
           className="h-full w-full object-cover transition-all duration-300 group-hover:scale-125"
         />
       </div>
-      {item.onSale === "yes" ? (
+      {item.onSale === "Yes" ? (
         <div className="absolute top-0 m-2 rounded-full bg-black">
-          <p className="rounded-full  p-1 text-[8px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
+          <p className="rounded-full  p-1 text-[10px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
             Sale
           </p>
         </div>
@@ -25,16 +25,16 @@ export default function ProductTile({ item }) {
         <div className="mb-2 flex">
           <p
             className={`mr-3 text-sm font-semibold ${
-              item.onSale === "yes" ? "line-through" : ""
+              item.onSale === "Yes" ? "line-through" : ""
             }`}
           >{`$ ${item.price}`}</p>
-          {item.onSale === "yes" ? (
+          {item.onSale === "Yes" ? (
             <p className="mr-3 text-sm font-semibold text-red-700">{`$ ${(
               item.price -
               item.price * (item.priceDrop / 100)
             ).toFixed(2)}`}</p>
           ) : null}
-          {item.onSale === "yes" ? (
+          {item.onSale === "Yes" ? (
             <p className="mr-3 text-sm font-semibold">{`-(${item.priceDrop}%)off`}</p>
           ) : null}
         </div>
