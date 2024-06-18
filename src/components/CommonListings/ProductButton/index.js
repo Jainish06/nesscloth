@@ -2,7 +2,7 @@
 
 import ComponentLevelLoader from "@/components/Loader/ComponentLevel";
 import { GlobalContext } from "@/context";
-// import { addToCart } from "@/services/cart";
+import { addToCart } from "@/services/cart";
 import { deleteProduct } from "@/services/product";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext } from "react";

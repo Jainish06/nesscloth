@@ -10,7 +10,7 @@ export async function PUT(req) {
     await connectToDB();
     const isAuthUser = await AuthUser(req);
 
-    if (isAuthUser?.role === "admin") {
+    if (isAuthUser?.role === "Admin") {
       const extractData = await req.json();
 
       const {
