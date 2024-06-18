@@ -15,7 +15,7 @@ export default function ProductButton({ item }) {
     setComponentLevelLoader,
     componentLevelLoader,
     user,
-    // showCartModal, setShowCartModal
+    showCartModal, setShowCartModal
   } = useContext(GlobalContext);
 
   const router = useRouter();

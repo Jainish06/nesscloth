@@ -14,6 +14,8 @@ export default function GlobalState({ children }) {
     id: "",
   });
   const [currUpdatedProduct, setCurrUpdatedProduct] = useState(null);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const [cartItems, setCartItems] = useState([])
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -41,6 +43,10 @@ export default function GlobalState({ children }) {
         setComponentLevelLoader,
         currUpdatedProduct,
         setCurrUpdatedProduct,
+        showCartModal,
+        setShowCartModal,
+        cartItems,
+        setCartItems
       }}
     >
       {children}

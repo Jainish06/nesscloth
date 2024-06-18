@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req) {
   try {
     await connectToDB();
+
     const isAuthUser = await AuthUser(req);
 
     if (isAuthUser) {
@@ -15,32 +16,33 @@ export async function GET(req) {
       const id = searchParams.get("id");
 
       if (!id)
-        return NextResponse.json({ success: false, message: "Please Login" });
-
-      const getAllCartItems = await Cart.find({ userID: id })
-        .populate("userID")
-        .populate("productID");
+        return NextResponse.json({
+          success: false,
+          message: "Please login in!",
+        });
+      const getAllCartItems = await Cart.find({ userID: id }).populate(
+        "productID"
+      );
 
       if (getAllCartItems) {
-        NextResponse.json({ success: true, data: getAllCartItems });
+        return NextResponse.json({ success: true, data: getAllCartItems });
       } else {
         return NextResponse.json({
           success: false,
-          message: "No cart items!",
+          message: "No Cart items found!",
           status: 204,
         });
       }
     } else {
       return NextResponse.json({
         success: false,
-        message: "You are not authorized!",
+        message: "You are not authenticated",
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
     return NextResponse.json({
       success: false,
-      message: "Something went wrong ! Please try again later",
+      message: "Something went wrong ! Please try again",
     });
   }
 }
