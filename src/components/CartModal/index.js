@@ -32,11 +32,12 @@ export default function CartModal() {
               productID: {
                 ...item.productID,
                 price:
-                  item.productID.onSale === "yes"
+                  item.productID.onSale === "Yes"
                     ? parseInt(
                         (
                           item.productID.price -
-                          item.productID.price * (item.productID.priceDrop / 100)
+                          item.productID.price *
+                            (item.productID.priceDrop / 100)
                         ).toFixed(2)
                       )
                     : item.productID.price,
@@ -61,13 +62,13 @@ export default function CartModal() {
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: "" });
       toast.success(res.message, {
-        position: 'top-right',
+        position: "top-right",
       });
 
       extractAllCartItems();
     } else {
       toast.error(res.message, {
-        position: 'top-right',
+        position: "top-right",
       });
       setComponentLevelLoader({ loading: false, id: getCartItemID });
     }
