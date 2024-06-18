@@ -2,6 +2,7 @@ import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Cart from "@/models/cart";
 import Joi from "joi";
+import { NextResponse } from "next/server";
 
 const AddToCart = Joi.object({
   userID: Joi.string().required(),
@@ -22,45 +23,49 @@ export async function POST(req) {
       const { error } = AddToCart.validate({ userID, productID });
 
       if (error) {
-        const isCartItemExists = await Cart.find({
-          productID: productID,
-          userID: userID,
-        });
-
-        if (isCartItemExists) {
-          return NextResponse.json({
-            success: false,
-            message: "Product already in cart.",
-          });
-        }
-
-        const saveItemToCart = await Cart.create(data);
-
-        if (saveItemToCart) {
-          return NextResponse.json({
-            success: true,
-            message: "Product added to cart.",
-          });
-        } else {
-          return NextResponse.json({
-            success: false,
-            message: "Failed to add item to cart.",
-          });
-        }
-      } else {
         return NextResponse.json({
           success: false,
           message: error.details[0].message,
         });
       }
+
+      console.log(productID, userID);
+
+      const isCartItemExists = await Cart.find({
+        productID: productID,
+        userID: userID,
+      });
+
+      console.log(isCartItemExists);
+
+      if (isCartItemExists?.length > 0) {
+        return NextResponse.json({
+          success: false,
+          message: "Product already in cart.",
+        });
+      }
+
+      const saveItemToCart = await Cart.create(data);
+
+      if (saveItemToCart) {
+        return NextResponse.json({
+          success: true,
+          message: "Product is added to cart !",
+        });
+      } else {
+        return NextResponse.json({
+          success: false,
+          message: "Failed to add the product to cart ! Please try again.",
+        });
+      }
     } else {
       return NextResponse.json({
         success: false,
-        message: "You are not authorized!",
+        message: "You are not authenticated",
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
     return NextResponse.json({
       success: false,
       message: "Something went wrong ! Please try again later",
