@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import AuthUser from "@/middleware/AuthUser";
 // import AuthUser from "@/middleware/AuthUser";
 import Product from "@/models/products";
 import Joi from "joi";
@@ -21,13 +22,12 @@ export const dynamic = "force-dynamic";
 export async function POST(req) {
   try {
     await connectToDB();
-    const user = 'admin'
 
-    // const isAuthUser = await AuthUser(req)
+    const isAuthUser = await AuthUser(req)
 
-    // console.log(isAuthUser , 'sangam');
+    console.log(isAuthUser, 'k');
 
-    if (user === "admin") {
+    if (isAuthUser?.role === "admin") {
       const extractData = await req.json();
 
       const {
