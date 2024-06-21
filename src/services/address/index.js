@@ -21,22 +21,18 @@ export const addNewAddress = async (formData) => {
 
 export const getAllAddresses = async (id) => {
   try {
-    const res = await fetch(
-      `http://localhost:3000/api/address/get-all-addresses?id=${id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`/api/address/get-all-addresses?id=${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    });
 
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };
 

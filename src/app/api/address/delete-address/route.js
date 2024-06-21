@@ -1,33 +1,32 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Address from "@/models/address";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function DELETE(req) {
   try {
     await connectToDB();
-
-    const { searchParams } = new URL.apply(req.url);
-
+    const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
     if (!id) {
       return NextResponse.json({
         success: false,
-        message: "Address ID required.",
+        message: "Address ID is required",
       });
     }
 
     const isAuthUser = await AuthUser(req);
 
     if (isAuthUser) {
-      const deleteAddress = await Address.findByIdAndDelete(id);
+      const deletedAddress = await Address.findByIdAndDelete(id);
 
-      if (deleteAddress) {
+      if (deletedAddress) {
         return NextResponse.json({
           success: true,
-          message: "Address deleted succesfully.",
+          message: "Address deleted successfully.",
         });
       } else {
         return NextResponse.json({
@@ -35,9 +34,14 @@ export async function DELETE(req) {
           message: "Failed to delete address.",
         });
       }
+    } else {
+      return NextResponse.json({
+        success: false,
+        message: "You are not authenticated",
+      });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
     return NextResponse.json({
       success: false,
       message: "Something went wrong ! Please try again later",

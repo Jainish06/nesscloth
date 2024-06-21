@@ -1,6 +1,7 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Address from "@/models/address";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -11,19 +12,20 @@ export async function PUT(req) {
 
     if (isAuthUser) {
       const data = await req.json();
-      const { _id, fullName, address, city, country, postalCode } = data;
-      const updateAddress = await Address.findOne(
+      const { _id, fullName, city, address, country, postalCode } = data;
+
+      const updateAddress = await Address.findOneAndUpdate(
         {
           _id: _id,
         },
-        { fullName, address, city, country, postalCode },
+        { fullName, city, address, country, postalCode },
         { new: true }
       );
 
       if (updateAddress) {
         return NextResponse.json({
           success: true,
-          message: "Address updated successfully.",
+          message: "Address updated successfully!",
         });
       } else {
         return NextResponse.json({
@@ -34,11 +36,11 @@ export async function PUT(req) {
     } else {
       return NextResponse.json({
         success: false,
-        message: "Not Authenticated.",
+        message: "You are not authenticated",
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
     return NextResponse.json({
       success: false,
       message: "Something went wrong ! Please try again later",
