@@ -15,7 +15,15 @@ export default function GlobalState({ children }) {
   });
   const [currUpdatedProduct, setCurrUpdatedProduct] = useState(null);
   const [showCartModal, setShowCartModal] = useState(false);
-  const [cartItems, setCartItems] = useState([])
+  const [cartItems, setCartItems] = useState([]);
+  const [address, setAddress] = useState(null);
+  const [addressFormData, setAddressFormData] = useState({
+    fullName : '',
+    address : '',
+    city : '',
+    country : '',
+    postalCode : '',
+    });
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -46,7 +54,11 @@ export default function GlobalState({ children }) {
         showCartModal,
         setShowCartModal,
         cartItems,
-        setCartItems
+        setCartItems,
+        address,
+        setAddress,
+        addressFormData,
+        setAddressFormData,
       }}
     >
       {children}
