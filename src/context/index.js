@@ -18,12 +18,12 @@ export default function GlobalState({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [address, setAddress] = useState(null);
   const [addressFormData, setAddressFormData] = useState({
-    fullName : '',
-    address : '',
-    city : '',
-    country : '',
-    postalCode : '',
-    });
+    fullName: "",
+    address: "",
+    city: "",
+    country: "",
+    postalCode: "",
+  });
 
   useEffect(() => {
     console.log(Cookies.get("token"));
