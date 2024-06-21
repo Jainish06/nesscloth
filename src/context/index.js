@@ -8,7 +8,7 @@ export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
   const [isAuthUser, setIsAuthUser] = useState(false);
   const [user, setUser] = useState(false);
-  const [pageLevelLoader, setPageLevelLoader] = useState(false);
+  const [pageLevelLoader, setPageLevelLoader] = useState(true);
   const [componentLevelLoader, setComponentLevelLoader] = useState({
     loading: false,
     id: "",

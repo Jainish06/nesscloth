@@ -103,6 +103,7 @@ export default function Navbar() {
                   className={
                     "mt-1.5 inline-block bg-white px-5 py-3 text-xs font-medium upprcase tracking-wide text-black"
                   }
+                  onClick={() => setShowCartModal(true)}
                 >
                   Cart
                 </button>
