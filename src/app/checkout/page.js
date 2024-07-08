@@ -1,8 +1,15 @@
 "use client";
 
+import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
-import { useRouter } from "next/navigation";
+import { getAllAddresses } from "@/services/address";
+import { callStripeSession } from "@/services/stripe";
+// import { createNewOrder } from "@/services/order";
+import { loadStripe } from "@stripe/stripe-js";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { SyncLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 export default function Checkout() {
   const {
@@ -13,11 +20,21 @@ export default function Checkout() {
     checkoutFormData,
     setCheckOutFormData,
   } = useContext(GlobalContext);
-  const router = useRouter();
 
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isOrderProcessing, setIsOrderProcessing] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
-  async function getAllAddresses() {
+  const router = useRouter();
+  const params = useSearchParams();
+
+  const publishableKey =
+    "pk_test_51PXlb3Rxy3UtMi8lETfYUr3SstMJnJC0OILfa3lD2M7PSNkVfkMymFuHUevCEVQbb2T3JsEKYzxv0J5WYa4x6JJo00hDYb4CJT";
+  const stripePromise = loadStripe(publishableKey);
+
+  console.log(cartItems);
+
+  async function fetchAllAddresses() {
     const res = await getAllAddresses(user?._id);
 
     if (res.success) {
@@ -26,8 +43,56 @@ export default function Checkout() {
   }
 
   useEffect(() => {
-    if (user !== null) getAllAddresses();
+    if (user !== null) fetchAllAddresses();
   }, [user]);
+
+  useEffect(() => {
+    async function createFinalOrder() {
+      const isStripe = JSON.parse(localStorage.getItem("stripe"));
+      if (
+        isStripe &&
+        params.get("status") === "success" &&
+        cartItems &&
+        cartItems.length > 0
+      ) {
+        setIsOrderProcessing(true);
+        const getCheckoutFormData = JSON.parse(
+          localStorage.getItem("checkoutFormData")
+        );
+        const createFinalCheckoutFormData = {
+          user: user?._id,
+          shippingAddress: getCheckoutFormData.shippingAddress,
+          orderItems: cartItems.map((item) => ({
+            qty: 1,
+            product: item.productID,
+          })),
+          paymentMethod: "Stripe",
+          totalPrice: cartItems.reduce(
+            (total, item) => item.productID.price + total,
+            0
+          ),
+          isPaid: true,
+          isProcessing: true,
+          paidAt: new Date(),
+        };
+        const res = await createNewOrder(createFinalCheckoutFormData);
+        if (res.success) {
+          setIsOrderProcessing(false);
+          setOrderSuccess(true);
+          toast.success(res.message, {
+            position: "top-right",
+          });
+        } else {
+          setIsOrderProcessing(false);
+          setOrderSuccess(false);
+          toast.error(res.message, {
+            position: "top-right",
+          });
+        }
+      }
+    }
+    createFinalOrder();
+  }, [params.get("status"), cartItems]);
 
   function handleSelectedAddress(getAddress) {
     if (getAddress._id === selectedAddress) {
@@ -53,6 +118,76 @@ export default function Checkout() {
       },
     });
   }
+
+  async function handleCheckout() {
+    const stripe = await stripePromise;
+
+    const createLineItems = cartItems.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          images: [item.productID.imageUrl],
+          name: item.productID.name,
+        },
+        unit_amount: item.productID.price * 100,
+      },
+      quantity: 1,
+    }));
+
+    const res = await callStripeSession(createLineItems);
+    setIsOrderProcessing(true);
+    localStorage.setItem("stripe", true);
+    localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
+
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: res.id,
+    });
+
+    console.log(error);
+  }
+
+  console.log(checkoutFormData);
+
+  useEffect(() => {
+    if (orderSuccess) {
+      setTimeout(() => {
+        setOrderSuccess(false);
+        router.push("/orders");
+      }, [2000]);
+    }
+  }, [orderSuccess]);
+
+  if (orderSuccess) {
+    return (
+      <section className="h-screen bg-gray-200">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8 ">
+            <div className="bg-white shadow">
+              <div className="px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
+                <h1 className="font-bold text-lg">
+                  Your payment is successfull! Redirecting to
+                  orders page.
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // if (isOrderProcessing) {
+  //   return (
+  //     <div className="w-full min-h-screen flex justify-center items-center">
+  //       <SyncLoader
+  //         color={"#000000"}
+  //         loading={isOrderProcessing}
+  //         size={30}
+  //         data-testid="loader"
+  //       />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
