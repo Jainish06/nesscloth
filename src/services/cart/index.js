@@ -14,25 +14,28 @@ export const addToCart = async (formData) => {
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const allCartItems = async (id) => {
   try {
-    const res = await fetch(`/api/cart/all-cart-items?id=${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
+    const res = await fetch(
+      `http://localhost:3000/api/cart/all-cart-items?id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      }
+    );
 
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -48,7 +51,7 @@ export const deleteFromCart = async (id) => {
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };

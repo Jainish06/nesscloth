@@ -8,8 +8,7 @@ export default function CommonCart({
   handleDeleteCartItem,
   componentLevelLoader,
 }) {
-
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <section className="h-screen bg-gray-100">
@@ -115,7 +114,7 @@ export default function CommonCart({
                 </div>
                 <div className="mt-5 text-center">
                   <button
-                  onClick={()=>router.push('/checkout')}
+                    onClick={() => router.push("/checkout")}
                     disabled={cartItems && cartItems.length === 0}
                     className="disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
                   >

@@ -22,13 +22,13 @@ export default function CommonDetails({ item }) {
 
     if (res.success) {
       toast.success(res.message, {
-        position: 'top-right',
+        position: "top-right",
       });
       setComponentLevelLoader({ loading: false, id: "" });
       setShowCartModal(true);
     } else {
       toast.error(res.message, {
-        position: 'top-right',
+        position: "top-right",
       });
       setComponentLevelLoader({ loading: false, id: "" });
       setShowCartModal(true);
@@ -89,7 +89,7 @@ export default function CommonDetails({ item }) {
                 >
                   ${item && item.price}
                 </h1>
-                {item.onSale === "yes" ? (
+                {item.onSale === "Yes" ? (
                   <h1 className="text-3xl font-bold text-red-700">{`$${(
                     item.price -
                     item.price * (item.priceDrop / 100)
@@ -140,7 +140,7 @@ export default function CommonDetails({ item }) {
           </div>
         </div>
       </div>
-      <Notification/>
+      <Notification />
     </section>
   );
 }
